@@ -8,6 +8,14 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const ALPHA_VANTAGE_API_KEY = process.env.ALPHA_VANTAGE_API_KEY;
 
+// Validate required environment variables
+if (!ALPHA_VANTAGE_API_KEY) {
+  console.error('ERROR: ALPHA_VANTAGE_API_KEY environment variable is not set');
+  console.error('Please create a .env file with your Alpha Vantage API key');
+  console.error('Example: ALPHA_VANTAGE_API_KEY=your_api_key_here');
+  process.exit(1);
+}
+
 // Initialize cache with 5 minutes TTL
 const cache = new NodeCache({ stdTTL: 300, checkperiod: 60 });
 
@@ -182,7 +190,7 @@ app.get('/history', async (req, res) => {
     // Determine which time series to use based on resolution
     if (resolution && ['1', '5', '15', '30', '60'].includes(resolution)) {
       functionType = 'TIME_SERIES_INTRADAY';
-      seriesKey = `Time Series (${resolution}min)`;
+      seriesKey = 'Time Series (5min)'; // Always use 5min since that's what we request from API
       outputsize = 'full';
     } else if (resolution === 'D') {
       functionType = 'TIME_SERIES_DAILY';
@@ -337,8 +345,4 @@ app.get('/', (req, res) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`Stock Data Visualization API running on port ${PORT}`);
-  if (!ALPHA_VANTAGE_API_KEY) {
-    console.warn('WARNING: ALPHA_VANTAGE_API_KEY not set in environment variables');
-    console.warn('Please create a .env file with your Alpha Vantage API key');
-  }
 });
