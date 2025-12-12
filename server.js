@@ -8,6 +8,20 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const ALPHA_VANTAGE_API_KEY = process.env.ALPHA_VANTAGE_API_KEY;
 
+// Constants
+const DEFAULT_INTRADAY_INTERVAL = '5min';
+const SUPPORTED_RESOLUTIONS = ['1', '5', '15', '30', '60', '240', 'D', 'W', 'M'];
+const TIME_SERIES_KEYS = [
+  'Time Series (1min)',
+  'Time Series (5min)',
+  'Time Series (15min)',
+  'Time Series (30min)',
+  'Time Series (60min)',
+  'Time Series (Daily)',
+  'Weekly Time Series',
+  'Monthly Time Series'
+];
+
 // Initialize cache with 5 minutes TTL (300 seconds)
 const cache = new NodeCache({ stdTTL: 300, checkperiod: 60 });
 
@@ -91,7 +105,7 @@ app.get('/api/chart/:symbol', checkApiKey, async (req, res) => {
     // Determine the correct API function based on interval
     if (interval === 'intraday' || interval.includes('min')) {
       functionName = 'TIME_SERIES_INTRADAY';
-      intervalParam = `&interval=${interval === 'intraday' ? '5min' : interval}`;
+      intervalParam = `&interval=${interval === 'intraday' ? DEFAULT_INTRADAY_INTERVAL : interval}`;
     } else if (interval === 'weekly') {
       functionName = 'TIME_SERIES_WEEKLY';
     } else if (interval === 'monthly') {
@@ -111,7 +125,7 @@ app.get('/api/chart/:symbol', checkApiKey, async (req, res) => {
 // TradingView UDF: Configuration endpoint
 app.get('/udf/config', (req, res) => {
   res.json({
-    supported_resolutions: ['1', '5', '15', '30', '60', '240', 'D', 'W', 'M'],
+    supported_resolutions: SUPPORTED_RESOLUTIONS,
     supports_group_request: false,
     supports_marks: false,
     supports_search: true,
@@ -194,7 +208,7 @@ app.get('/udf/symbols', checkApiKey, async (req, res) => {
       has_intraday: true,
       has_daily: true,
       has_weekly_and_monthly: true,
-      supported_resolutions: ['1', '5', '15', '30', '60', '240', 'D', 'W', 'M']
+      supported_resolutions: SUPPORTED_RESOLUTIONS
     });
   } catch (error) {
     console.error('Error fetching symbol info:', error.message);
@@ -235,14 +249,12 @@ app.get('/udf/history', checkApiKey, async (req, res) => {
     
     // Parse the time series data
     let timeSeries = null;
-    if (data['Time Series (1min)']) timeSeries = data['Time Series (1min)'];
-    else if (data['Time Series (5min)']) timeSeries = data['Time Series (5min)'];
-    else if (data['Time Series (15min)']) timeSeries = data['Time Series (15min)'];
-    else if (data['Time Series (30min)']) timeSeries = data['Time Series (30min)'];
-    else if (data['Time Series (60min)']) timeSeries = data['Time Series (60min)'];
-    else if (data['Time Series (Daily)']) timeSeries = data['Time Series (Daily)'];
-    else if (data['Weekly Time Series']) timeSeries = data['Weekly Time Series'];
-    else if (data['Monthly Time Series']) timeSeries = data['Monthly Time Series'];
+    for (const key of TIME_SERIES_KEYS) {
+      if (data[key]) {
+        timeSeries = data[key];
+        break;
+      }
+    }
     
     if (!timeSeries) {
       return res.json({ s: 'no_data' });
