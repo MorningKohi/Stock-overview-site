@@ -1,0 +1,89 @@
+.stock-quote {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.stock-quote.loading,
+.stock-quote.error {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.stock-quote.error {
+  color: #dc3545;
+  background: #fff5f5;
+}
+
+.stock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.stock-symbol {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.stock-price {
+  font-size: 32px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.stock-change {
+  display: flex;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.stock-change.positive {
+  color: #28a745;
+}
+
+.stock-change.negative {
+  color: #dc3545;
+}
+
+.stock-details {
+  border-top: 1px solid #e5e5e5;
+  padding-top: 16px;
+  margin-bottom: 16px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 14px;
+}
+
+.detail-row .label {
+  color: #666;
+}
+
+.detail-row .value {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.stock-footer {
+  border-top: 1px solid #e5e5e5;
+  padding-top: 12px;
+  text-align: center;
+}
+
+.stock-footer small {
+  color: #999;
+  font-size: 12px;
+}

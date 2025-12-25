@@ -1,0 +1,88 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #f5f7fa;
+}
+
+.App {
+  min-height: 100vh;
+}
+
+.App-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 40px 20px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.App-header h1 {
+  margin: 0 0 8px 0;
+  font-size: 42px;
+  font-weight: 700;
+}
+
+.App-header p {
+  margin: 0;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.demo-page {
+  background: #f5f7fa;
+  min-height: calc(100vh - 160px);
+}
+
+.search-section,
+.quote-section {
+  margin-bottom: 40px;
+}
+
+.search-section h2,
+.quote-section h2 {
+  font-size: 28px;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* Builder.io page styles */
+.builder-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .App-header h1 {
+    font-size: 32px;
+  }
+
+  .App-header p {
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  .search-section h2,
+  .quote-section h2 {
+    font-size: 24px;
+  }
+}
